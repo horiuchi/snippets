@@ -1,0 +1,4 @@
+Counter
+    value Integer
+    comment Text Maybe
+

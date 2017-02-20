@@ -1,0 +1,5 @@
+dependent module
+    scotty
+    persistent
+    aeson
+

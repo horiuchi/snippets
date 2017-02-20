@@ -1,0 +1,19 @@
+{
+  "name": "roa-simulator",
+  "version": "0.0.1",
+  "authors": [
+    "hhoriuchi"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-ui-bootstrap-bower": "~0.9.0",
+    "bootstrap": "~3.0.3"
+  }
+}

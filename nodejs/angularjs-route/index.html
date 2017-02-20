@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>AngularJS Routing example</title>
+</head>
+<body ng-app="sampleApp">
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<ul class="nav">
+				<li><a href="#"> Root </a></li>
+				<li><a href="#top"> Top </a></li>
+				<li><a href="#tripplan"> TripPlan </a></li>
+			</ul>
+		</div>
+		<div class="col-md-9">
+			<div ng-view></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/ng-template" id="top.html">
+	<h1> Top View </h1>
+	<p>{{ message }}</p>
+</script>
+<script type="text/ng-template" id="trip.html">
+	<h1> Trip Plan View </h1>
+	<p>{{ message }}</p>
+</script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-route.min.js"></script>
+<script type="text/javascript">
+var app = angular.module('sampleApp', ['ngRoute']);
+app.config(function($routeProvider) {
+	$routeProvider
+		.when('/', {
+			redirectTo: '/top',
+		})
+		.when('/top', {
+			templateUrl: 'top.html',
+			controller: 'TopController',
+		})
+		.when('/tripplan', {
+			templateUrl: 'trip.html',
+			controller: 'TripPlanController',
+		});
+});
+
+app.controller('TopController', function($scope) {
+	$scope.message = 'Top Screen';
+});
+
+app.controller('TripPlanController', function($scope) {
+	$scope.message = 'TripPlan Screen';
+});
+</script>
+</body>
+</html>
+

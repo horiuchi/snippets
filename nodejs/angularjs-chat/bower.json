@@ -1,0 +1,25 @@
+{
+  "name": "angularjs-chat",
+  "version": "0.0.0",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.0.3",
+    "jquery-fullPage": "git@github.com:alvarotrigo/fullPage.js.git",
+    "angular": "~1.2.*",
+    "angular-bootstrap": "~0.6.0",
+    "bootstrap": "~3.0.0"
+  },
+  "exportsOverride": {
+    "jquery-fullPage": {
+      "js": "jquery.fullPage.js",
+      "css": "jquery.fullPage.css"
+    }
+  }
+}

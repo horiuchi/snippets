@@ -1,0 +1,89 @@
+209679232
+
+・《シグネチャ》を得る際に自分が考えた内容
+
+単純に getdataを呼び出した後のデータをsortするのでは、
+計算量が O(n logn)となってしまい nが大きいので計算が終わらない。
+ここで、 getdataの結果はたかだか2byteしかないので最大65536通りしかない。
+getsignではソート済みのデータを順番に足しあわせて行けば良いので、
+getdataの結果を最初から値によってgroup化しておけば良い事に気づきました。
+さらには、getdataの計算途中の SHA1の計算結果を無駄にしないようにしました。
+
+・使用したプログラミング言語や環境の名前とそれを選んだ理由
+
+最初は Haskellを使用しましたが最初のgetdataの計算が終わらなかったため、C++で書きました。
+C++にした理由は、できるだけ高速に計算ができるだろうと思われたからです。
+
+・自分の考えをアピールするのに必要と思われる内容
+
+上でも書きましたが、各数値に対してSHA1を計算する箇所は省略しようがないと思われたので、
+それ以外の計算量をできるだけ減らすように工夫しました。
+
+・書いたコード
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+#include <boost/lexical_cast.hpp>
+#include <boost/uuid/sha1.hpp>
+
+
+void collect(std::vector<long>& v, unsigned short* hash) {
+	for (int i = 0; i < 10; ++i) {
+		++v[hash[i]];
+	}
+}
+long counting(std::vector<long> const& v, int skips) {
+	long sum = 0;
+	int s = 0;
+	for (int i = 0, size = v.size(); i < size; ++i) {
+		if (v[i] == 0L) continue;
+		if (v[i] <= s) {
+			s -= v[i];
+		} else {
+			long count = v[i];
+			while (count > s) {
+				// std::cout << i << std::endl;
+				sum += i;
+				count -= s;
+				s = skips;
+			}
+			s -= count;
+		}
+	}
+	return sum;
+}
+long getsign(long count, int skips) {
+	std::vector<long> v(0x10000);
+	boost::uuids::detail::sha1 s;
+
+	for (long i = 0; i < count / 10; ++i) {
+		std::string a = boost::lexical_cast<std::string>(i);
+		s.process_bytes(a.c_str(), a.size());
+		unsigned int digest[5];
+		s.get_digest(digest);
+		s.reset();
+
+		collect(v, reinterpret_cast<unsigned short*>(digest));
+	}
+	// std::cout << "collect complete." << std::endl;
+	return counting(v, skips);
+}
+
+int main() {
+	long count = 107374182400L;
+	int skips = 16777216;
+
+	std::cout << "result: " << getsign(count, skips) << std::endl;
+}
+
+
+・以下は感想
+
+このコードでも、結果が出るまで2時間ほどかかっていました。
+もっと良い方法があるのかな、と思いましたがこのコードで投稿させて頂きます。
+CodeIQへの挑戦はこの問題が始めてですが、やっぱりプログラムの勉強には
+考えながらコードを書くのが一番ですね。頭も腕も動かすのが大事だと思いました。
+結構難しかったですが、面白い問題で良かったです。
+

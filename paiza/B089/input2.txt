@@ -1,0 +1,8 @@
+4 2
+ACEG
+HBDF
+EGAC
+DFHB
+ABA
+BAB
+
